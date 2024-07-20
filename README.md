@@ -18,6 +18,13 @@ expo init rn-project-structure
 
 Now let's talk about some common project structures you can implement no matter what technology you're using.
 
+```base
+yarn create expo-app AwesomeProject
+
+cd AwesomeProje
+yarn expo start
+```
+
 You can always break your front-end app into three layers:
 
 1. **UI or Presentation Layer**. Represents all the components or UI elements the user interacts with like buttons, popups, text, etc.
