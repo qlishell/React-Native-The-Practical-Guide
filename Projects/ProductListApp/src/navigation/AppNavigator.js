@@ -1,6 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import DetailScreen from "../screens/DetailScreen";
+import CustomHeader from "../components/CustomHeader";
 import HomeScreen from "../screens/HomeScreen";
 
 const Stack = createStackNavigator();
@@ -11,13 +12,11 @@ const AppNavigator = () => {
             <Stack.Screen
                 name="Home"
                 component={HomeScreen}
-                options={{ title: "Danh sách sản phẩm" }}
+                options={{
+                    header: () => <CustomHeader />,
+                }}
             />
-            <Stack.Screen
-                name="Detail"
-                component={DetailScreen}
-                options={{ title: "Chi tiết sản phẩm" }}
-            />
+            <Stack.Screen name="Detail" component={DetailScreen} options={{ title: "Chi tiết sản phẩm" }} />
         </Stack.Navigator>
     );
 };
