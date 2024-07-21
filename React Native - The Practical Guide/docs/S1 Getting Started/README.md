@@ -46,7 +46,7 @@
 
 ## A Glance Under The Hood Of React Native
 
-### Tóm tắt nội dung:
+### Tóm tắt nội dung
 
 **Cách hoạt động của React Native:**
 
@@ -75,7 +75,7 @@
 
 ## Creating React Native Projects: Expo CLI vs React Native CLI
 
-### Tóm tắt nội dung:
+### Tóm tắt nội dung
 
 **Tạo dự án React Native: Expo CLI vs React Native CLI**
 
@@ -117,4 +117,18 @@ cd AwesomeProject
 yarn expo start
 ```
 
-## Running Our First App On A Real Device!
+## Running Our First App On A Real Device
+
+-   Android Studio
+-   Xcode
+
+## Course Content
+
+**Getting Started**
+
+| Essentials                 | React & React Native | Advanced               |
+| -------------------------- | -------------------- | ---------------------- |
+| Basic & Fundamentals       | Redux & React Native | User & Authentication  |
+| Dynamic & Adaptive Layouts | Complete Example App | Native Device Features |
+| Navigation                 | Handing User Input   | Push Notifications     |
+| JS & ReactJS Refreshers    | Http Requests        | Publishing Apps        |
