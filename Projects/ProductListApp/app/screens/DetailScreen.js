@@ -1,9 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const DetailScreen = ({ route }) => {
     const { product } = route.params;
+    const navigation = useNavigation();
 
     return (
         <SafeAreaView style={styles.container}>
@@ -25,6 +27,10 @@ const DetailScreen = ({ route }) => {
                 </View>
             </ScrollView>
             <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                    <Ionicons name="arrow-back-outline" size={24} color="white" />
+                    <Text style={styles.backText}>Quay lại</Text>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.addToCartButton}>
                     <Ionicons name="cart-outline" size={24} color="white" />
                     <Text style={styles.addToCartText}>Thêm vào giỏ hàng</Text>
@@ -102,14 +108,27 @@ const styles = StyleSheet.create({
         textAlign: "right",
     },
     buttonContainer: {
-        position: "absolute",
-        bottom: 0,
-        left: 0,
-        right: 0,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         padding: 10,
         backgroundColor: "white",
         borderTopWidth: 1,
         borderTopColor: "#e0e0e0",
+    },
+    backButton: {
+        backgroundColor: "#95a5a6",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 15,
+        borderRadius: 8,
+    },
+    backText: {
+        color: "white",
+        fontSize: 18,
+        fontWeight: "bold",
+        marginLeft: 10,
     },
     addToCartButton: {
         backgroundColor: "#3498db",

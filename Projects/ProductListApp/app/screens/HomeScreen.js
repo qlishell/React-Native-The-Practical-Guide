@@ -4,7 +4,7 @@ import ProductItem from "../components/ProductItem";
 import { products } from "../data/products";
 
 const HomeScreen = ({ navigation }) => {
-    const [displayedProducts, setDisplayedProducts] = useState(products.slice(0, 10));
+    const [displayedProducts, setDisplayedProducts] = useState(products.slice(0, 5));
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
 
         setIsLoading(true);
         setTimeout(() => {
-            const newProducts = products.slice(displayedProducts.length, displayedProducts.length + 10);
+            const newProducts = products.slice(displayedProducts.length, displayedProducts.length + 5);
             setDisplayedProducts(prevProducts => [...prevProducts, ...newProducts]);
             setIsLoading(false);
         }, 2000); // Simulating network delay
@@ -47,9 +47,9 @@ const HomeScreen = ({ navigation }) => {
                 data={displayedProducts}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
-                numColumns={2}
+                numColumns={1}
                 contentContainerStyle={styles.listContainer}
-                initialNumToRender={10}
+                initialNumToRender={5}
                 onEndReached={loadMoreItems}
                 onEndReachedThreshold={0.1}
                 ListFooterComponent={renderFooter}
