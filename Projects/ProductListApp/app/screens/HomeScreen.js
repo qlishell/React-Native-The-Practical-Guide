@@ -1,22 +1,29 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, SafeAreaView, View } from "react-native";
 import ProductItem from "../components/ProductItem";
-import { products } from "../data/products";
+import { products } from "../constants";
 
 const HomeScreen = ({ navigation }) => {
-    const [displayedProducts, setDisplayedProducts] = useState(products.slice(0, 5));
+    const [displayedProducts, setDisplayedProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Simulate loading delay
+        // Simulate initial loading delay
         setTimeout(() => {
+            setDisplayedProducts(products.slice(0, 5));
             setIsLoading(false);
-        }, 5000);
+        }, 3000);
     }, []);
 
     const renderItem = useCallback(
-        ({ item }) => <ProductItem item={item} onPress={() => navigation.navigate("Detail", { product: item })} />,
-        [navigation],
+        ({ item }) => (
+            <ProductItem
+                item={item}
+                onPress={() => navigation.navigate("Detail", { product: item })}
+                isLoading={isLoading}
+            />
+        ),
+        [navigation, isLoading],
     );
 
     const keyExtractor = useCallback(item => item.id, []);
@@ -37,6 +44,9 @@ const HomeScreen = ({ navigation }) => {
         return (
             <View style={{ marginVertical: 16, alignItems: "center" }}>
                 <ActivityIndicator size="large" />
+                {/* {[...Array(2)].map((_, index) => (
+                    <ProductItem key={`skeleton-${index}`} isLoading={true} />
+                ))} */}
             </View>
         );
     };
@@ -45,9 +55,9 @@ const HomeScreen = ({ navigation }) => {
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
                 <FlatList
-                    data={displayedProducts}
+                    data={isLoading ? [...Array(5)] : displayedProducts}
                     renderItem={renderItem}
-                    keyExtractor={keyExtractor}
+                    keyExtractor={(item, index) => (isLoading ? `skeleton-${index}` : keyExtractor(item))}
                     numColumns={1}
                     contentContainerStyle={{ padding: 8 }}
                     initialNumToRender={5}

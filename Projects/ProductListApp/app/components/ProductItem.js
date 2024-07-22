@@ -1,16 +1,17 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Skeleton from "./Skeleton";
 
 const ProductItem = ({ item, onPress, isLoading }) => {
     if (isLoading) {
         return (
-            <View style={[styles.itemContainer, styles.loadingItem]}>
-                <View style={styles.loadingImage} />
-                <View style={styles.infoContainer}>
-                    <View style={styles.loadingText} />
-                    <View style={styles.loadingText} />
-                    <View style={[styles.loadingText, styles.loadingPrice]} />
+            <View style={styles.itemContainer}>
+                <Skeleton width="100%" height={250} style={styles.image} />
+                <View style={styles.textContainer}>
+                    <Skeleton width="80%" height={20} style={styles.nameSkeleton} />
+                    <Skeleton width="40%" height={16} style={styles.codeSkeleton} />
                 </View>
+                {/* <Skeleton width={100} height={40} style={styles.priceSkeleton} /> */}
             </View>
         );
     }
@@ -25,9 +26,7 @@ const ProductItem = ({ item, onPress, isLoading }) => {
                 <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
                     {item.name}
                 </Text>
-                <View style={styles.infoContainer}>
-                    <Text style={styles.code}>{item.code}</Text>
-                </View>
+                <Text style={styles.code}>{item.code}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -61,11 +60,6 @@ const styles = StyleSheet.create({
         padding: 12,
         justifyContent: "center",
     },
-    infoContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
     name: {
         fontSize: 16,
         fontWeight: "bold",
@@ -93,22 +87,16 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 0,
         borderTopRightRadius: 0,
     },
-    loadingItem: {
-        backgroundColor: "#f0f0f0",
-    },
-    loadingImage: {
-        width: "100%",
-        height: 150,
-        backgroundColor: "#e0e0e0",
-    },
-    loadingText: {
-        height: 12,
-        backgroundColor: "#e0e0e0",
+    nameSkeleton: {
         marginBottom: 8,
-        borderRadius: 4,
     },
-    loadingPrice: {
-        width: "40%",
+    codeSkeleton: {
+        marginTop: 4,
+    },
+    priceSkeleton: {
+        position: "absolute",
+        bottom: 8,
+        right: 8,
     },
 });
 
