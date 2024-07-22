@@ -1,34 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Image, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { CircleButton } from "../components/Button";
-import { assets, COLORS, FONTS, SIZES } from "../constants";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import DetailHeader from "../components/DetailHeader";
+import { COLORS, FONTS, SIZES } from "../constants";
 
 const DetailScreen = ({ route }) => {
     const { product } = route.params;
-    const navigation = useNavigation();
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
-            <View style={styles.imageContainer}>
-                <Image
-                    source={{ uri: product.image }}
-                    resizeMode="cover"
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        borderBottomLeftRadius: SIZES.medium,
-                        borderBottomRightRadius: SIZES.medium,
-                    }}
-                />
-                <CircleButton
-                    imgUrl={assets.left}
-                    handlePress={() => navigation.goBack()}
-                    left={15}
-                    top={StatusBar.currentHeight + 10}
-                />
-            </View>
+            <DetailHeader linkImage={product.image} />
             <ScrollView style={{ flex: 1 }}>
                 <View style={{ padding: SIZES.font }}>
                     <Text style={[styles.name]}>{product.name}</Text>
@@ -41,11 +22,11 @@ const DetailScreen = ({ route }) => {
                             lineHeight: SIZES.large,
                         }}
                     >
-                        <View style={styles.codeContainer}>
+                        <View style={{ flexDirection: "row", marginBottom: 10 }}>
                             <Text style={styles.codeLabel}>Mã sản phẩm:</Text>
                             <Text style={styles.codeValue}>{product.code}</Text>
                         </View>
-                        <View style={styles.quantityContainer}>
+                        <View style={{ flexDirection: "row", marginBottom: 20 }}>
                             <Text style={styles.quantityLabel}>Số lượng còn lại:</Text>
                             <Text style={styles.quantityValue}>{product.quantity}</Text>
                         </View>
@@ -67,13 +48,6 @@ const DetailScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-    imageContainer: {
-        width: "100%",
-        height: 373,
-        backgroundColor: "white",
-        justifyContent: "center",
-        alignItems: "center",
-    },
     name: {
         fontWeight: "bold",
         marginBottom: 10,
@@ -87,10 +61,6 @@ const styles = StyleSheet.create({
         color: COLORS.secondary,
         marginBottom: 20,
     },
-    codeContainer: {
-        flexDirection: "row",
-        marginBottom: 10,
-    },
     codeLabel: {
         flex: 1,
         fontSize: SIZES.medium,
@@ -102,10 +72,6 @@ const styles = StyleSheet.create({
         color: COLORS.primary,
         fontWeight: "500",
         textAlign: "right",
-    },
-    quantityContainer: {
-        flexDirection: "row",
-        marginBottom: 20,
     },
     quantityLabel: {
         flex: 1,
