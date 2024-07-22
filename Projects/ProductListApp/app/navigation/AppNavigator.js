@@ -1,8 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import DetailScreen from "../screens/DetailScreen";
 import CustomHeader from "../components/CustomHeader";
-import HomeScreen from "../screens/HomeScreen";
+import { DetailScreen, HomeScreen } from "../screens";
 
 const Stack = createStackNavigator();
 
@@ -16,7 +15,7 @@ const AppNavigator = () => {
                     header: () => <CustomHeader />,
                 }}
             />
-            <Stack.Screen name="Detail" component={DetailScreen} options={{ title: "Chi tiết sản phẩm" }} />
+            <Stack.Screen name="Detail" component={DetailScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     );
 };
