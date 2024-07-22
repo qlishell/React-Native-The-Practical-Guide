@@ -1,37 +1,63 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { CircleButton } from "../components/Button";
+import { assets, COLORS, FONTS, SIZES } from "../constants";
 
 const DetailScreen = ({ route }) => {
     const { product } = route.params;
     const navigation = useNavigation();
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView}>
-                <View style={styles.imageContainer}>
-                    <Image source={{ uri: product.image }} style={styles.image} />
-                </View>
-                <View style={styles.infoContainer}>
-                    <Text style={styles.name}>{product.name}</Text>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
+            <View style={styles.imageContainer}>
+                <Image
+                    source={{ uri: product.image }}
+                    resizeMode="cover"
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        borderBottomLeftRadius: SIZES.medium,
+                        borderBottomRightRadius: SIZES.medium,
+                    }}
+                />
+                <CircleButton
+                    imgUrl={assets.left}
+                    handlePress={() => navigation.goBack()}
+                    left={15}
+                    top={StatusBar.currentHeight + 10}
+                />
+            </View>
+            <ScrollView style={{ flex: 1 }}>
+                <View style={{ padding: SIZES.font }}>
+                    <Text style={[styles.name]}>{product.name}</Text>
                     <Text style={styles.price}>{product.price.toLocaleString("vi-VN")} ₫</Text>
-                    <View style={styles.codeContainer}>
-                        <Text style={styles.codeLabel}>Mã sản phẩm:</Text>
-                        <Text style={styles.codeValue}>{product.code}</Text>
-                    </View>
-                    <View style={styles.quantityContainer}>
-                        <Text style={styles.quantityLabel}>Số lượng còn lại:</Text>
-                        <Text style={styles.quantityValue}>{product.quantity}</Text>
+                    <View
+                        style={{
+                            fontSize: SIZES.small,
+                            fontFamily: FONTS.regular,
+                            color: COLORS.secondary,
+                            lineHeight: SIZES.large,
+                        }}
+                    >
+                        <View style={styles.codeContainer}>
+                            <Text style={styles.codeLabel}>Mã sản phẩm:</Text>
+                            <Text style={styles.codeValue}>{product.code}</Text>
+                        </View>
+                        <View style={styles.quantityContainer}>
+                            <Text style={styles.quantityLabel}>Số lượng còn lại:</Text>
+                            <Text style={styles.quantityValue}>{product.quantity}</Text>
+                        </View>
                     </View>
                 </View>
             </ScrollView>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                {/* <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
                     <Ionicons name="arrow-back-outline" size={24} color="white" />
                     <Text style={styles.backText}>Quay lại</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.addToCartButton}>
+                </TouchableOpacity> */}
+                <TouchableOpacity style={[styles.addToCartButton, { width: "100%" }]}>
                     <Ionicons name="cart-outline" size={24} color="white" />
                     <Text style={styles.addToCartText}>Thêm vào giỏ hàng</Text>
                 </TouchableOpacity>
@@ -41,38 +67,24 @@ const DetailScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#f8f8f8",
-    },
-    scrollView: {
-        flex: 1,
-    },
     imageContainer: {
         width: "100%",
-        height: 300,
+        height: 373,
         backgroundColor: "white",
         justifyContent: "center",
         alignItems: "center",
     },
-    image: {
-        width: "80%",
-        height: "80%",
-        resizeMode: "contain",
-    },
-    infoContainer: {
-        padding: 20,
-    },
     name: {
-        fontSize: 24,
         fontWeight: "bold",
-        color: "#333",
         marginBottom: 10,
+        fontFamily: FONTS.semiBold,
+        fontSize: SIZES.extraLarge,
+        color: COLORS.primary,
     },
     price: {
-        fontSize: 22,
+        fontSize: SIZES.large,
         fontWeight: "bold",
-        color: "#e74c3c",
+        color: COLORS.secondary,
         marginBottom: 20,
     },
     codeContainer: {
@@ -81,13 +93,13 @@ const styles = StyleSheet.create({
     },
     codeLabel: {
         flex: 1,
-        fontSize: 16,
-        color: "#666",
+        fontSize: SIZES.medium,
+        color: COLORS.gray,
     },
     codeValue: {
         flex: 1,
-        fontSize: 16,
-        color: "#333",
+        fontSize: SIZES.medium,
+        color: COLORS.primary,
         fontWeight: "500",
         textAlign: "right",
     },
@@ -97,13 +109,13 @@ const styles = StyleSheet.create({
     },
     quantityLabel: {
         flex: 1,
-        fontSize: 16,
-        color: "#666",
+        fontSize: SIZES.medium,
+        color: COLORS.gray,
     },
     quantityValue: {
         flex: 1,
-        fontSize: 16,
-        color: "#333",
+        fontSize: SIZES.medium,
+        color: COLORS.primary,
         fontWeight: "500",
         textAlign: "right",
     },
@@ -117,7 +129,7 @@ const styles = StyleSheet.create({
         borderTopColor: "#e0e0e0",
     },
     backButton: {
-        backgroundColor: "#95a5a6",
+        backgroundColor: "gray",
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
@@ -131,7 +143,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     addToCartButton: {
-        backgroundColor: "#3498db",
+        backgroundColor: "black",
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
