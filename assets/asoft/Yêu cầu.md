@@ -24,6 +24,12 @@ Dữ liệu danh sách mặt hàng tự thiết lập với các tham số
 -   Giá bán
 -   Ảnh
 
+-   **Bổ sung thêm yêu cầu cho Màn hình chi tiết**:
+
+Trong màn hình chi tiết thay hình ảnh đang được gán cứng, bây giờ chúng ta sẽ thay đổi hình ảnh gán cứng này thành Slide hiển thị thông tin từ danh sách ảnh/video, có thể play video ở đó, hỗ trợ xem fullScreen.
+
+Có thể sử dụng DB như SQLite hoặc Realm để lưu dữ liệu và load lên từ đó.
+
 Tham khảo:
 
 <https://reactnative.dev/docs/set-up-your-environment>
