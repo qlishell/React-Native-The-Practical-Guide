@@ -7,5 +7,4 @@ export const COLORS = {
     accent500: "#ddb52f",
     secondary: "#4D626C",
     white: "#FFF",
-    gray: "#74858C",
 };
