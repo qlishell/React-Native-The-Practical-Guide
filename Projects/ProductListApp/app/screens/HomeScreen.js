@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, SafeAreaView, View } from "react-native";
 import ProductItem from "../components/ProductItem";
+import Skeleton from "../components/Skeleton";
 import { products } from "../constants";
 
 const HomeScreen = ({ navigation }) => {
@@ -16,14 +17,8 @@ const HomeScreen = ({ navigation }) => {
     }, []);
 
     const renderItem = useCallback(
-        ({ item }) => (
-            <ProductItem
-                item={item}
-                onPress={() => navigation.navigate("Detail", { product: item })}
-                isLoading={isLoading}
-            />
-        ),
-        [navigation, isLoading],
+        ({ item }) => <ProductItem item={item} onPress={() => navigation.navigate("Detail", { product: item })} />,
+        [navigation],
     );
 
     const keyExtractor = useCallback(item => item.id, []);
@@ -44,20 +39,48 @@ const HomeScreen = ({ navigation }) => {
         return (
             <View style={{ marginVertical: 16, alignItems: "center" }}>
                 <ActivityIndicator size="large" />
-                {/* {[...Array(2)].map((_, index) => (
-                    <ProductItem key={`skeleton-${index}`} isLoading={true} />
-                ))} */}
             </View>
         );
     };
+
+    if (displayedProducts.length === 0) {
+        return (
+            <>
+                {[...Array(5)].map((_, index) => (
+                    <View
+                        key={`skeleton-${index}`}
+                        style={{
+                            padding: 10,
+                            margin: 8,
+                            backgroundColor: "white",
+                            borderRadius: 8,
+                            shadowColor: "#000", // Shadow used iOS
+                            shadowOpacity: 0.1,
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowRadius: 8,
+                            elevation: 5, // Elevation used Android
+                            overflow: "hidden",
+                        }}
+                    >
+                        <Skeleton width="100%" height={250} style={{ resizeMode: "cover", borderRadius: 8 }} />
+                        <View style={{ padding: 12, justifyContent: "center" }}>
+                            <Skeleton width="80%" height={20} style={{ marginBottom: 8 }} />
+                            <Skeleton width="40%" height={16} style={{ marginTop: 4 }} />
+                        </View>
+                        {/* <Skeleton width={100} height={40} style={{ position: "absolute", bottom: 8, right: 8 }} /> */}
+                    </View>
+                ))}
+            </>
+        );
+    }
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
                 <FlatList
-                    data={isLoading ? [...Array(5)] : displayedProducts}
+                    data={displayedProducts}
                     renderItem={renderItem}
-                    keyExtractor={(item, index) => (isLoading ? `skeleton-${index}` : keyExtractor(item))}
+                    keyExtractor={keyExtractor}
                     numColumns={1}
                     contentContainerStyle={{ padding: 8 }}
                     initialNumToRender={5}
