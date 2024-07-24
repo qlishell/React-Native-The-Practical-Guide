@@ -5,7 +5,11 @@ export const products = [
         code: "DT001",
         quantity: 50,
         price: 12000000,
-        image: "https://via.placeholder.com/150?text=Phone",
+        media: [
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Phone1" },
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Phone2" },
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+        ],
     },
     {
         id: "2",
@@ -13,7 +17,11 @@ export const products = [
         code: "LT002",
         quantity: 30,
         price: 25000000,
-        image: "https://via.placeholder.com/150?text=Laptop",
+        media: [
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Laptop1" },
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Laptop2" },
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+        ],
     },
     {
         id: "3",
@@ -21,7 +29,11 @@ export const products = [
         code: "TN003",
         quantity: 100,
         price: 2500000,
-        image: "https://via.placeholder.com/150?text=Headphones",
+        media: [
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Headphone1" },
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Headphone2" },
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+        ],
     },
     {
         id: "4",
@@ -29,7 +41,11 @@ export const products = [
         code: "MA004",
         quantity: 20,
         price: 18000000,
-        image: "https://via.placeholder.com/150?text=Camera",
+        media: [
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Camera1" },
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Camera2" },
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+        ],
     },
     {
         id: "5",
@@ -37,7 +53,11 @@ export const products = [
         code: "DH005",
         quantity: 75,
         price: 5000000,
-        image: "https://via.placeholder.com/150?text=Smartwatch",
+        media: [
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Smartwatch1" },
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Smartwatch2" },
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+        ],
     },
     {
         id: "6",
@@ -45,7 +65,11 @@ export const products = [
         code: "LB006",
         quantity: 60,
         price: 1500000,
-        image: "https://via.placeholder.com/150?text=Speaker",
+        media: [
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Speaker1" },
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Speaker2" },
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+        ],
     },
     {
         id: "7",
@@ -53,7 +77,11 @@ export const products = [
         code: "TB007",
         quantity: 40,
         price: 8000000,
-        image: "https://via.placeholder.com/150?text=Tablet",
+        media: [
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Tablet1" },
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Tablet2" },
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+        ],
     },
     {
         id: "8",
@@ -61,7 +89,11 @@ export const products = [
         code: "BP008",
         quantity: 90,
         price: 2000000,
-        image: "https://via.placeholder.com/150?text=Keyboard",
+        media: [
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Keyboard1" },
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Keyboard2" },
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+        ],
     },
     {
         id: "9",
@@ -69,7 +101,11 @@ export const products = [
         code: "CG009",
         quantity: 120,
         price: 1000000,
-        image: "https://via.placeholder.com/150?text=Mouse",
+        media: [
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Mouse1" },
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Mouse2" },
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+        ],
     },
     {
         id: "10",
@@ -77,6 +113,10 @@ export const products = [
         code: "MH010",
         quantity: 25,
         price: 10000000,
-        image: "https://via.placeholder.com/150?text=Monitor",
+        media: [
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Monitor1" },
+            { type: "image", url: "https://via.placeholder.com/300x300?text=Monitor2" },
+            { type: "video", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
+        ],
     },
 ];
