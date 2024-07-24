@@ -34,10 +34,6 @@ const DetailScreen = ({ route }) => {
                 </View>
             </ScrollView>
             <View style={styles.buttonContainer}>
-                {/* <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                    <Ionicons name="arrow-back-outline" size={24} color="white" />
-                    <Text style={styles.backText}>Quay lại</Text>
-                </TouchableOpacity> */}
                 <TouchableOpacity style={[styles.addToCartButton, { width: "100%" }]}>
                     <Ionicons name="cart-outline" size={24} color="white" />
                     <Text style={styles.addToCartText}>Thêm vào giỏ hàng</Text>
