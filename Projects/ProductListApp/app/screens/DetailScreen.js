@@ -1,40 +1,67 @@
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import DetailHeader from "../components/DetailHeader";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import MediaSlide from "../components/MediaSlide";
 import { COLORS, FONTS, SIZES } from "../constants";
+import { getProduct } from "../database/db";
 
 const DetailScreen = ({ route }) => {
-    const { product } = route.params;
+    const { productId } = route.params;
+    const [product, setProduct] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const fetchedProduct = await getProduct(productId);
+                setProduct(fetchedProduct);
+            } catch (error) {
+                console.error("Error fetching product:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProduct();
+    }, [productId]);
+
+    if (isLoading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color={COLORS.primary} />
+            </View>
+        );
+    }
+
+    if (!product) {
+        return (
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Không tìm thấy sản phẩm</Text>
+            </View>
+        );
+    }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
-            <DetailHeader linkImage={product.image} />
-            <ScrollView style={{ flex: 1 }}>
-                <View style={{ padding: SIZES.font }}>
-                    <Text style={[styles.name]}>{product.name}</Text>
+        <SafeAreaView style={styles.container}>
+            <MediaSlide media={product.media} />
+            <ScrollView style={styles.scrollView}>
+                <View style={styles.contentContainer}>
+                    <Text style={styles.name}>{product.name}</Text>
                     <Text style={styles.price}>{product.price.toLocaleString("vi-VN")} ₫</Text>
-                    <View
-                        style={{
-                            fontSize: SIZES.small,
-                            fontFamily: FONTS.regular,
-                            color: COLORS.secondary,
-                            lineHeight: SIZES.large,
-                        }}
-                    >
-                        <View style={{ flexDirection: "row", marginBottom: 10 }}>
-                            <Text style={styles.codeLabel}>Mã sản phẩm:</Text>
-                            <Text style={styles.codeValue}>{product.code}</Text>
+                    <View style={styles.description}>
+                        <View style={styles.infoRow}>
+                            <Text style={styles.infoLabel}>Mã sản phẩm:</Text>
+                            <Text style={styles.infoValue}>{product.code}</Text>
                         </View>
-                        <View style={{ flexDirection: "row", marginBottom: 20 }}>
-                            <Text style={styles.quantityLabel}>Số lượng còn lại:</Text>
-                            <Text style={styles.quantityValue}>{product.quantity}</Text>
+                        <View style={styles.infoRow}>
+                            <Text style={styles.infoLabel}>Số lượng còn lại:</Text>
+                            <Text style={styles.infoValue}>{product.quantity}</Text>
                         </View>
                     </View>
                 </View>
             </ScrollView>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.addToCartButton, { width: "100%" }]}>
+                <TouchableOpacity style={styles.addToCartButton}>
                     <Ionicons name="cart-outline" size={24} color="white" />
                     <Text style={styles.addToCartText}>Thêm vào giỏ hàng</Text>
                 </TouchableOpacity>
@@ -44,6 +71,31 @@ const DetailScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#f8f8f8",
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    errorText: {
+        fontSize: SIZES.large,
+        color: COLORS.primary,
+        fontFamily: FONTS.bold,
+    },
+    scrollView: {
+        flex: 1,
+    },
+    contentContainer: {
+        padding: SIZES.font,
+    },
     name: {
         fontWeight: "bold",
         marginBottom: 10,
@@ -57,52 +109,31 @@ const styles = StyleSheet.create({
         color: COLORS.secondary,
         marginBottom: 20,
     },
-    codeLabel: {
-        flex: 1,
-        fontSize: SIZES.medium,
-        color: COLORS.gray,
+    description: {
+        fontSize: SIZES.small,
+        fontFamily: FONTS.regular,
+        color: COLORS.secondary,
+        lineHeight: SIZES.large,
     },
-    codeValue: {
-        flex: 1,
-        fontSize: SIZES.medium,
-        color: COLORS.primary,
-        fontWeight: "500",
-        textAlign: "right",
-    },
-    quantityLabel: {
-        flex: 1,
-        fontSize: SIZES.medium,
-        color: COLORS.gray,
-    },
-    quantityValue: {
-        flex: 1,
-        fontSize: SIZES.medium,
-        color: COLORS.primary,
-        fontWeight: "500",
-        textAlign: "right",
-    },
-    buttonContainer: {
+    infoRow: {
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
+        marginBottom: 10,
+    },
+    infoLabel: {
+        fontSize: SIZES.medium,
+        color: COLORS.gray,
+    },
+    infoValue: {
+        fontSize: SIZES.medium,
+        color: COLORS.primary,
+        fontWeight: "500",
+    },
+    buttonContainer: {
         padding: 10,
         backgroundColor: "white",
         borderTopWidth: 1,
         borderTopColor: "#e0e0e0",
-    },
-    backButton: {
-        backgroundColor: "gray",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 15,
-        borderRadius: 8,
-    },
-    backText: {
-        color: "white",
-        fontSize: 18,
-        fontWeight: "bold",
-        marginLeft: 10,
     },
     addToCartButton: {
         backgroundColor: "black",
