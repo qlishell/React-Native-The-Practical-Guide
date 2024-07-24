@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { COLORS } from "./app/constants";
+import { initDatabase, insertSampleData } from "./app/database/db";
 import AppNavigator from "./app/navigation/AppNavigator";
 
 const theme = {
@@ -21,6 +22,20 @@ export default function App() {
         InterRegular: require("./assets/fonts/Inter-Regular.ttf"),
         InterSemiBold: require("./assets/fonts/Inter-SemiBold.ttf"),
     });
+
+    useEffect(() => {
+        const setupDatabase = async () => {
+            try {
+                await initDatabase();
+                await insertSampleData();
+                console.log("Database setup completed");
+            } catch (error) {
+                console.error("Error setting up database:", error);
+            }
+        };
+
+        setupDatabase();
+    }, []);
 
     if (!loaded) return null;
 
