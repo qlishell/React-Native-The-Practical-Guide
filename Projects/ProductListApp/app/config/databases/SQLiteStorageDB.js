@@ -48,7 +48,7 @@ export const insertSampleData = () => {
     });
 };
 
-export const getProducts = () => {
+export const getAllProducts = () => {
     return new Promise((resolve, reject) => {
         SQLiteStorage().transaction(tx => {
             tx.executeSql(
