@@ -60,7 +60,7 @@ export const insertSampleData = async () => {
     });
 };
 
-export const getProducts = async () => {
+export const getAllProducts = async () => {
     const db = await SQLite.openDatabaseAsync("productDB.db");
 
     return new Promise(async (resolve, reject) => {
