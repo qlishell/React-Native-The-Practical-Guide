@@ -4,6 +4,7 @@ import { StatusBar, StyleSheet, View } from "react-native";
 import { assets, SIZES } from "../constants";
 import { CircleButton, FullscreenButton } from "./Button";
 import CarouselCards from "./CarouselCards";
+import ModalFullscreen from "./ModalFullscreen";
 
 const DetailHeader = ({ media }) => {
     const navigation = useNavigation();
@@ -12,6 +13,15 @@ const DetailHeader = ({ media }) => {
     const toggleFullscreen = () => {
         setFullscreen(!fullscreen);
     };
+
+    const ButtonComponent = (
+        <FullscreenButton
+            top={StatusBar.currentHeight + 10}
+            right={SIZES.base}
+            handlePress={toggleFullscreen}
+            fullscreen={fullscreen}
+        />
+    );
 
     return (
         <View style={styles.container}>
@@ -22,11 +32,12 @@ const DetailHeader = ({ media }) => {
                 left={15}
                 top={StatusBar.currentHeight + 10}
             />
-            <FullscreenButton
-                top={StatusBar.currentHeight + 10}
-                right={SIZES.base}
-                handlePress={toggleFullscreen}
+            {ButtonComponent}
+            <ModalFullscreen
+                media={media}
                 fullscreen={fullscreen}
+                handlePress={toggleFullscreen}
+                buttonComponent={ButtonComponent}
             />
         </View>
     );
