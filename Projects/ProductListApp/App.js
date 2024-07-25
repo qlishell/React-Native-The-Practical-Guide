@@ -1,9 +1,11 @@
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, { useEffect } from "react";
+import { AppRegistry } from "react-native";
+import { name as appName } from "./app.json";
 import { COLORS } from "./app/constants";
-import { initDatabase, insertSampleData } from "./app/database/db";
+import { initDatabase } from "./app/database/AsyncStorageDB";
 import AppNavigator from "./app/navigation/AppNavigator";
 
 const theme = {
@@ -27,7 +29,6 @@ export default function App() {
         const setupDatabase = async () => {
             try {
                 await initDatabase();
-                await insertSampleData();
                 console.log("Database setup completed");
             } catch (error) {
                 console.error("Error setting up database:", error);
@@ -40,10 +41,12 @@ export default function App() {
     if (!loaded) return null;
 
     return (
-        <LinearGradient colors={[COLORS.primary, COLORS.accent500]} style={{ flex: 1 }}>
+        <LinearGradient colors={[COLORS.primary500, COLORS.accent500]} style={{ flex: 1 }}>
             <NavigationContainer theme={theme}>
                 <AppNavigator />
             </NavigationContainer>
         </LinearGradient>
     );
 }
+
+AppRegistry.registerComponent(appName, () => App);
