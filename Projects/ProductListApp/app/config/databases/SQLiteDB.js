@@ -1,13 +1,15 @@
-import { products } from "../constants";
-import { ExpoSQLite } from "./db";
+import * as _ExpoSQLite from "expo-sqlite";
+import { products } from "../../constants";
 
 export const initDatabase = async () => {
+    const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
     return new Promise(async (resolve, reject) => {
-        await ExpoSQLite().withTransactionAsync(async () => {
+        await db.withTransactionAsync(async () => {
             try {
+                console.log(`DatabaseName: ${db.databaseName}`);
                 // `execAsync()` rất hữu ích cho các truy vấn hàng loạt khi bạn muốn thực thi hoàn toàn.
                 // Xin lưu ý rằng `execAsync()` không thoát khỏi các tham số và có thể dẫn đến SQL injection.
-                await ExpoSQLite().execAsync(`
+                await db.execAsync(`
                     DROP TABLE IF EXISTS products;
                     CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, price REAL, code TEXT, quantity INTEGER, media TEXT);
                 `);
@@ -22,15 +24,16 @@ export const initDatabase = async () => {
 };
 
 export const insertSampleData = async () => {
+    const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
     return new Promise(async (resolve, reject) => {
-        await ExpoSQLite().withTransactionAsync(async () => {
+        await db.withTransactionAsync(async () => {
             let result;
-            const statement = await ExpoSQLite().prepareAsync(
+            const statement = await db.prepareAsync(
                 "INSERT INTO products (name, price, code, quantity, media) VALUES ($name, $price, $code, $quantity, $media)",
             );
             try {
                 // Xóa dữ liệu cũ (nếu có)
-                await ExpoSQLite().runAsync("DELETE FROM products");
+                await db.runAsync("DELETE FROM products");
                 console.log("Old data deleted");
 
                 // Chèn dữ liệu mới
@@ -58,11 +61,12 @@ export const insertSampleData = async () => {
 };
 
 export const getAllProducts = async () => {
+    const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
     return new Promise(async (resolve, reject) => {
-        await ExpoSQLite().withTransactionAsync(async () => {
+        await db.withTransactionAsync(async () => {
             try {
                 // `getAllAsync()` rất hữu ích khi bạn muốn lấy tất cả kết quả dưới dạng một mảng đối tượng.
-                const allRows = await ExpoSQLite().getAllAsync("SELECT * FROM products");
+                const allRows = await db.getAllAsync("SELECT * FROM products");
                 const products = allRows.map(row => {
                     return {
                         ...row,
@@ -80,11 +84,12 @@ export const getAllProducts = async () => {
 };
 
 export const getProduct = async id => {
+    const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
     return new Promise(async (resolve, reject) => {
-        await ExpoSQLite().withTransactionAsync(async () => {
+        await db.withTransactionAsync(async () => {
             try {
                 // `getFirstAsync()` rất hữu ích khi bạn muốn lấy một hàng từ cơ sở dữ liệu.
-                const firstRow = await ExpoSQLite().getFirstAsync("SELECT * FROM products WHERE id = $id", { $id: id }); // Binding named parameters from object
+                const firstRow = await db.getFirstAsync("SELECT * FROM products WHERE id = $id", { $id: id }); // Binding named parameters from object
 
                 if (firstRow) {
                     console.log(`getProduct: ${firstRow.id}`);
