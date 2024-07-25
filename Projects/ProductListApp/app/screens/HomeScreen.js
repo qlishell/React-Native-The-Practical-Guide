@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, SafeAreaView, View } from "react-native";
 import ProductItem from "../components/ProductItem";
 import SkeletonCard from "../components/SkeletonCard";
-import { getProducts } from "../database/db";
+import { getAllProducts } from "../database/AsyncStorageDB";
 
 const HomeScreen = ({ navigation }) => {
     const [displayedProducts, setDisplayedProducts] = useState([]);
@@ -15,7 +15,7 @@ const HomeScreen = ({ navigation }) => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const products = await getProducts();
+                const products = await getAllProducts();
                 setAllProducts(products);
                 loadInitialProducts(products);
             } catch (error) {

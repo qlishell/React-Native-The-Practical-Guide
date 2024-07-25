@@ -1,9 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import MediaSlide from "../components/MediaSlide";
+import DetailHeader from "../components/DetailHeader";
 import { COLORS, FONTS, SIZES } from "../constants";
-import { getProduct } from "../database/db";
+import { getProduct } from "../database/AsyncStorageDB";
 
 const DetailScreen = ({ route }) => {
     const { productId } = route.params;
@@ -43,7 +43,7 @@ const DetailScreen = ({ route }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <MediaSlide media={product.media} />
+            <DetailHeader media={product.media} />
             <ScrollView style={styles.scrollView}>
                 <View style={styles.contentContainer}>
                     <Text style={styles.name}>{product.name}</Text>
