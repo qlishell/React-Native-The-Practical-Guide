@@ -1,40 +1,45 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { Image, StatusBar, View } from "react-native";
-import { CircleButton } from "../components/Button";
+import React, { useState } from "react";
+import { StatusBar, StyleSheet, View } from "react-native";
 import { assets, SIZES } from "../constants";
+import { CircleButton, FullscreenButton } from "./Button";
+import CarouselCards from "./CarouselCards";
 
-const DetailHeader = ({ linkImage }) => {
+const DetailHeader = ({ media }) => {
     const navigation = useNavigation();
+    const [fullscreen, setFullscreen] = useState(false);
+
+    const toggleFullscreen = () => {
+        setFullscreen(!fullscreen);
+    };
 
     return (
-        <View
-            style={{
-                width: "100%",
-                height: 373,
-                backgroundColor: "white",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
-            <Image
-                source={{ uri: linkImage }}
-                resizeMode="cover"
-                style={{
-                    width: "100%",
-                    height: "100%",
-                    borderBottomLeftRadius: SIZES.medium,
-                    borderBottomRightRadius: SIZES.medium,
-                }}
-            />
+        <View style={styles.container}>
+            <CarouselCards media={media} />
             <CircleButton
                 imgUrl={assets.left}
                 handlePress={() => navigation.goBack()}
                 left={15}
                 top={StatusBar.currentHeight + 10}
             />
+            <FullscreenButton
+                top={StatusBar.currentHeight + 10}
+                right={SIZES.base}
+                handlePress={toggleFullscreen}
+                fullscreen={fullscreen}
+            />
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        width: "100%",
+        height: 373,
+        backgroundColor: "white",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+});
 
 export default DetailHeader;

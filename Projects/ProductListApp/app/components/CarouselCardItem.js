@@ -5,21 +5,17 @@ import { Image, StyleSheet, View } from "react-native";
 // export const SLIDER_WIDTH = Dimensions.get("window").width;
 // export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
-const CarouselCardItem = ({ item, index, fullscreen }) => {
+const CarouselCardItem = ({ item, index }) => {
     return (
-        <View style={[styles.container, fullscreen && styles.fullscreenContainer]} key={index}>
+        <View style={styles.container} key={index}>
             {item.type === "image" ? (
-                <Image
-                    source={{ uri: item.url }}
-                    style={[styles.media, fullscreen && styles.fullscreenMedia]}
-                    resizeMode={fullscreen ? "contain" : "cover"}
-                />
+                <Image source={{ uri: item.url }} style={styles.media} resizeMode="cover" />
             ) : (
                 <Video
                     source={{ uri: item.url }}
-                    style={[styles.media, fullscreen && styles.fullscreenMedia]}
+                    style={styles.media}
                     useNativeControls
-                    resizeMode={fullscreen ? "contain" : "cover"}
+                    resizeMode="contain"
                     isLooping
                 />
             )}
@@ -27,7 +23,9 @@ const CarouselCardItem = ({ item, index, fullscreen }) => {
     );
 };
 const styles = StyleSheet.create({
-    container: {},
+    container: {
+        backgroundColor: "black",
+    },
     media: {
         width: "100%",
         height: "100%",
