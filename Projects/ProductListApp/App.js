@@ -1,6 +1,7 @@
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
+import { SQLiteProvider } from "expo-sqlite";
 import React, { useEffect } from "react";
 import { AppRegistry } from "react-native";
 import { name as appName } from "./app.json";
@@ -43,11 +44,34 @@ export default function App() {
 
     return (
         <LinearGradient colors={[COLORS.primary500, COLORS.accent500]} style={{ flex: 1 }}>
-            <NavigationContainer theme={theme}>
-                <AppNavigator />
-            </NavigationContainer>
+            <SQLiteProvider databaseName="test.db" onInit={migrateDbIfNeeded}>
+                <NavigationContainer theme={theme}>
+                    <AppNavigator />
+                </NavigationContainer>
+            </SQLiteProvider>
         </LinearGradient>
     );
+}
+
+async function migrateDbIfNeeded(db) {
+    const DATABASE_VERSION = 1;
+    let { user_version: currentDbVersion } = await db.getFirstAsync("PRAGMA user_version");
+    if (currentDbVersion >= DATABASE_VERSION) {
+        return;
+    }
+    if (currentDbVersion === 0) {
+        await db.execAsync(`
+            PRAGMA journal_mode = 'wal';
+            CREATE TABLE todos (id INTEGER PRIMARY KEY NOT NULL, value TEXT NOT NULL, intValue INTEGER);
+        `);
+        await db.runAsync("INSERT INTO todos (value, intValue) VALUES (?, ?)", "hello", 1);
+        await db.runAsync("INSERT INTO todos (value, intValue) VALUES (?, ?)", "world", 2);
+        currentDbVersion = 1;
+    }
+    // if (currentDbVersion === 1) {
+    //   Add more migrations
+    // }
+    await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
 }
 
 AppRegistry.registerComponent(appName, () => App);

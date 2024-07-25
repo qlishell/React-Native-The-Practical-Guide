@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useSQLiteContext } from "expo-sqlite";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import DetailHeader from "../components/DetailHeader";
@@ -9,6 +10,9 @@ const DetailScreen = ({ route }) => {
     const { productId } = route.params;
     const [product, setProduct] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+
+    const db = useSQLiteContext();
+    const [todos, setTodos] = useState([]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -21,8 +25,13 @@ const DetailScreen = ({ route }) => {
                 setIsLoading(false);
             }
         };
-
         fetchProduct();
+
+        async function setup() {
+            const result = await db.getAllAsync("SELECT * FROM todos");
+            setTodos(result);
+        }
+        setup();
     }, [productId]);
 
     if (isLoading) {
@@ -56,6 +65,13 @@ const DetailScreen = ({ route }) => {
                         <View style={styles.infoRow}>
                             <Text style={styles.infoLabel}>Số lượng còn lại:</Text>
                             <Text style={styles.infoValue}>{product.quantity}</Text>
+                        </View>
+                        <View style={styles.contentContainer}>
+                            {todos.map((todo, index) => (
+                                <View style={styles.todoItemContainer} key={index}>
+                                    <Text>{`${todo.intValue} - ${todo.value}`}</Text>
+                                </View>
+                            ))}
                         </View>
                     </View>
                 </View>
