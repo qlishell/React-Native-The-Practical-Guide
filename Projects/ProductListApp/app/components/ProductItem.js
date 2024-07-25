@@ -7,7 +7,7 @@ const ProductItem = ({ item, onPress }) => {
         <TouchableOpacity style={styles.itemContainer} onPress={onPress}>
             <View style={{ position: "relative" }}>
                 <Image
-                    source={{ uri: item.image }}
+                    source={{ uri: item.media[0].url }}
                     width="100%"
                     height={250}
                     style={{ resizeMode: "cover", borderRadius: 8 }}
