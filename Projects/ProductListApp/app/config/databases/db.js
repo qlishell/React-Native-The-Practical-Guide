@@ -8,7 +8,7 @@ export const SQLiteStorage = () => {
     const database_displayname = "SQLite React Offline Database";
     const database_size = 200000;
 
-    const db = SQLite.openDatabase(
+    const db = SQLiteStorage.openDatabase(
         {
             name: database_name,
             version: database_version,
