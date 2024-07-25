@@ -15,7 +15,6 @@ const ModalFullscreen = ({ media, fullscreen, handlePress, buttonComponent }) =>
             style={styles.modalContainer}
         >
             <View style={styles.innerContainer}>
-                {buttonComponent}
                 <CarouselCards media={media} />
             </View>
         </Modal>
@@ -25,10 +24,10 @@ const ModalFullscreen = ({ media, fullscreen, handlePress, buttonComponent }) =>
 const styles = StyleSheet.create({
     modalContainer: {
         margin: 0, // Ensures the modal covers the whole screen
+        padding: 0,
         justifyContent: "center",
     },
     innerContainer: {
-        // flex: 1,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "rgba(0, 0, 0, 0.5)",
