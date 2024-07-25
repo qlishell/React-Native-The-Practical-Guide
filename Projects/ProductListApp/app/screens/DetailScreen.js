@@ -2,8 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import DetailHeader from "../components/DetailHeader";
+import { getProduct } from "../config/databases/SQLiteDB";
 import { COLORS, FONTS, SIZES } from "../constants";
-import { getProduct } from "../database/AsyncStorageDB";
 
 const DetailScreen = ({ route }) => {
     const { productId } = route.params;

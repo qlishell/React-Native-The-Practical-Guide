@@ -4,8 +4,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect } from "react";
 import { AppRegistry } from "react-native";
 import { name as appName } from "./app.json";
+import { initDatabase, insertSampleData } from "./app/config/databases/SQLiteDB";
 import { COLORS } from "./app/constants";
-import { initDatabase } from "./app/database/AsyncStorageDB";
 import AppNavigator from "./app/navigation/AppNavigator";
 
 const theme = {
@@ -29,6 +29,7 @@ export default function App() {
         const setupDatabase = async () => {
             try {
                 await initDatabase();
+                await insertSampleData();
                 console.log("Database setup completed");
             } catch (error) {
                 console.error("Error setting up database:", error);

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, SafeAreaView, View } from "react-native";
 import ProductItem from "../components/ProductItem";
 import SkeletonCard from "../components/SkeletonCard";
-import { getAllProducts } from "../database/AsyncStorageDB";
+import { getAllProducts } from "../config/databases/SQLiteDB";
 
 const HomeScreen = ({ navigation }) => {
     const [displayedProducts, setDisplayedProducts] = useState([]);

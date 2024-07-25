@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
-import { assets, SIZES } from "../constants";
+import { assets } from "../constants";
 import { CircleButton, FullscreenButton } from "./Button";
 import CarouselCards from "./CarouselCards";
 import ModalFullscreen from "./ModalFullscreen";
@@ -17,7 +17,7 @@ const DetailHeader = ({ media }) => {
     const ButtonComponent = (
         <FullscreenButton
             top={StatusBar.currentHeight + 10}
-            right={SIZES.base}
+            right={15}
             handlePress={toggleFullscreen}
             fullscreen={fullscreen}
         />
