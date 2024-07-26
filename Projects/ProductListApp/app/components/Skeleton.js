@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Animated } from "react-native";
 
 const Skeleton = ({ width, height, style }) => {
     const animatedValue = new Animated.Value(0);
 
-    React.useEffect(() => {
+    useEffect(() => {
         Animated.loop(
             Animated.sequence([
                 Animated.timing(animatedValue, {
