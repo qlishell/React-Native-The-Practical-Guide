@@ -2,9 +2,9 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import { assets } from "../constants";
-import { CircleButton, FullscreenButton } from "./Button";
 import CarouselCards from "./CarouselCards";
 import ModalFullscreen from "./ModalFullscreen";
+import { CircleButton, FullscreenButton } from "./ui/Button";
 
 const DetailHeader = ({ media }) => {
     const navigation = useNavigation();
