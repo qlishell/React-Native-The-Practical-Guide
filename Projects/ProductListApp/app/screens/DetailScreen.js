@@ -1,10 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useSQLiteContext } from "expo-sqlite";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Toast from "react-native-toast-message";
 import DetailHeader from "../components/DetailHeader";
+import TodoList from "../components/TodoList";
 import { getProduct } from "../config/databases/SQLiteDB";
 import { COLORS, FONTS, SIZES } from "../constants";
+import { CartContext } from "../context/CartContext";
 
 const DetailScreen = ({ route }) => {
     const { productId } = route.params;
@@ -14,10 +17,12 @@ const DetailScreen = ({ route }) => {
     const db = useSQLiteContext();
     const [todos, setTodos] = useState([]);
 
+    const { addToCart } = useContext(CartContext);
+
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const fetchedProduct = await getProduct(productId);
+                const fetchedProduct = await getProduct(db, productId);
                 setProduct(fetchedProduct);
             } catch (error) {
                 console.error("Error fetching product:", error);
@@ -33,6 +38,16 @@ const DetailScreen = ({ route }) => {
         }
         setup();
     }, [productId]);
+
+    const handleAddToCart = item => {
+        addToCart(item);
+        Toast.show({
+            type: "success",
+            text1: "Thành công",
+            text2: "Đã thêm vào giỏ hàng ✌️",
+            position: "top",
+        });
+    };
 
     if (isLoading) {
         return (
@@ -66,18 +81,12 @@ const DetailScreen = ({ route }) => {
                             <Text style={styles.infoLabel}>Số lượng còn lại:</Text>
                             <Text style={styles.infoValue}>{product.quantity}</Text>
                         </View>
-                        <View style={styles.contentContainer}>
-                            {todos.map((todo, index) => (
-                                <View style={styles.todoItemContainer} key={index}>
-                                    <Text>{`${todo.intValue} - ${todo.value}`}</Text>
-                                </View>
-                            ))}
-                        </View>
+                        <TodoList todos={todos} />
                     </View>
                 </View>
             </ScrollView>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.addToCartButton}>
+                <TouchableOpacity style={styles.addToCartButton} onPress={() => handleAddToCart(product)}>
                     <Ionicons name="cart-outline" size={24} color="white" />
                     <Text style={styles.addToCartText}>Thêm vào giỏ hàng</Text>
                 </TouchableOpacity>
