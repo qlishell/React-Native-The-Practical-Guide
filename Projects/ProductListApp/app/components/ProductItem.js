@@ -7,12 +7,12 @@ const ProductItem = ({ item, onPress }) => {
     return (
         <Card>
             <TouchableOpacity onPress={onPress}>
-                <View style={{ position: "relative" }}>
+                <View style={{ position: "relative", overflow: "hidden" }}>
                     <Image
                         source={{ uri: item.media[0].url }}
                         width="100%"
                         height={250}
-                        style={{ resizeMode: "cover", borderRadius: 8 }}
+                        style={{ resizeMode: "cover", borderRadius: 7 }}
                     />
                     <Text style={styles.price}>{item.price.toLocaleString("vi-VN")} ₫</Text>
                 </View>
