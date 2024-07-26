@@ -1,8 +1,7 @@
-import * as _ExpoSQLite from "expo-sqlite";
 import { products } from "../../constants";
 
-export const initDatabase = async () => {
-    const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
+export const initDatabase = async db => {
+    // const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
     return new Promise(async (resolve, reject) => {
         await db.withTransactionAsync(async () => {
             try {
@@ -10,7 +9,6 @@ export const initDatabase = async () => {
                 // `execAsync()` rất hữu ích cho các truy vấn hàng loạt khi bạn muốn thực thi hoàn toàn.
                 // Xin lưu ý rằng `execAsync()` không thoát khỏi các tham số và có thể dẫn đến SQL injection.
                 await db.execAsync(`
-                    DROP TABLE IF EXISTS products;
                     CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, price REAL, code TEXT, quantity INTEGER, media TEXT);
                 `);
                 console.log("Table created successfully");
@@ -23,8 +21,8 @@ export const initDatabase = async () => {
     });
 };
 
-export const insertSampleData = async () => {
-    const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
+export const insertSampleData = async db => {
+    // const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
     return new Promise(async (resolve, reject) => {
         await db.withTransactionAsync(async () => {
             let result;
@@ -60,8 +58,8 @@ export const insertSampleData = async () => {
     });
 };
 
-export const getAllProducts = async () => {
-    const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
+export const getAllProducts = async db => {
+    // const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
     return new Promise(async (resolve, reject) => {
         await db.withTransactionAsync(async () => {
             try {
@@ -83,8 +81,8 @@ export const getAllProducts = async () => {
     });
 };
 
-export const getProduct = async id => {
-    const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
+export const getProduct = async (db, id) => {
+    // const db = await _ExpoSQLite.openDatabaseAsync("productDB.db");
     return new Promise(async (resolve, reject) => {
         await db.withTransactionAsync(async () => {
             try {
