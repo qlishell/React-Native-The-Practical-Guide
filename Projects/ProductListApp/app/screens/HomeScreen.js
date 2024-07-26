@@ -1,3 +1,4 @@
+import { useSQLiteContext } from "expo-sqlite";
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, SafeAreaView, View } from "react-native";
 import ProductItem from "../components/ProductItem";
@@ -11,11 +12,13 @@ const HomeScreen = ({ navigation }) => {
     const [page, setPage] = useState(0);
     const itemsPerPage = 5;
 
+    const db = useSQLiteContext();
+
     // Sử dụng useEffect để fetch dữ liệu sản phẩm từ cơ sở dữ liệu khi component mount.
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const products = await getAllProducts();
+                const products = await getAllProducts(db);
                 setAllProducts(products);
                 loadInitialProducts(products);
             } catch (error) {
