@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Image, Text, TouchableOpacity } from "react-native";
-import { COLORS, SHADOWS, SIZES } from "../constants";
+import { COLORS, SHADOWS, SIZES } from "../../constants";
 
 export const CircleButton = ({ imgUrl, handlePress, ...props }) => {
     return (
