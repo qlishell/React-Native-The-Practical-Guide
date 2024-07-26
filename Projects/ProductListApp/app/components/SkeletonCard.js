@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
-import Skeleton from "./Skeleton";
 import Card from "./ui/Card";
+import Skeleton from "./ui/Skeleton";
 
 const SkeletonCard = ({ index }) => {
     return (
