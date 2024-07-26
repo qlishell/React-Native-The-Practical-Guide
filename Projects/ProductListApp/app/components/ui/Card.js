@@ -2,8 +2,8 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { SHADOWS } from "../../constants";
 
-const Card = ({ children }) => {
-    return <View style={[SHADOWS.medium, , styles.itemContainer]}>{children}</View>;
+const Card = ({ children, style }) => {
+    return <View style={[SHADOWS.medium, , styles.itemContainer, style]}>{children}</View>;
 };
 
 const styles = StyleSheet.create({
