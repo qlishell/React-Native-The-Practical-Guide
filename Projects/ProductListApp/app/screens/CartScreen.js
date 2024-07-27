@@ -1,44 +1,134 @@
-import React, { useContext } from "react";
-import { Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { RectButton, SquareButton } from "../components/ui/Button";
 import Card from "../components/ui/Card";
+import { COLORS, FONTS, SHADOWS, SIZES } from "../constants";
 import { CartContext } from "../context/CartContext";
 
 const CartScreen = () => {
-    const { cart, increaseQuantity, decreaseQuantity, removeFromCart } = useContext(CartContext);
+    const { cart, increaseQuantity, decreaseQuantity, removeFromCart, getItemsCount, getTotalPrice } =
+        useContext(CartContext);
+
+    const [totalPrice, setTotalPrice] = useState("");
+
+    const total = useMemo(() => getTotalPrice(), [cart]);
+
+    useEffect(() => {
+        console.log(getTotalPrice());
+    }, [cart]);
 
     const renderItem = ({ item }) => (
-        <Card>
+        <Card style={styles.card}>
             <Image source={{ uri: item.media[0].url }} style={styles.productImage} />
             <View style={styles.productDetails}>
-                <Text style={styles.cartText}>
-                    {item.name} - ${item.price}
-                </Text>
-                <View style={styles.quantityContainer}>
-                    <TouchableOpacity style={styles.quantityButton} onPress={() => decreaseQuantity(item.id)}>
-                        <Text style={styles.quantityButtonText}>-</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.quantityText}>{item.quantity}</Text>
-                    <TouchableOpacity style={styles.quantityButton} onPress={() => increaseQuantity(item.id)}>
-                        <Text style={styles.quantityButtonText}>+</Text>
-                    </TouchableOpacity>
+                <View style={styles.cartText}>
+                    <Text style={[styles.title, { color: COLORS.primary }]}>{item.name}</Text>
+                    <Text style={[styles.title, { color: COLORS.secondary }]}>
+                        {item.price.toLocaleString("vi-VN")} ₫
+                    </Text>
                 </View>
-                <Button title="Xóa sản phẩm" onPress={() => removeFromCart(item.id)} />
+                <View style={styles.quantityContainer}>
+                    <View style={styles.quantityControls}>
+                        <SquareButton onPress={() => decreaseQuantity(item.id)} style={styles.quantityText}>
+                            <Ionicons name="remove-circle-outline" size={32} color="white" />
+                        </SquareButton>
+                        <Text
+                            style={{
+                                color: COLORS.white,
+                                width: 30,
+                                textAlign: "center",
+                            }}
+                        >
+                            {item.quantity}
+                        </Text>
+                        <SquareButton onPress={() => increaseQuantity(item.id)} style={styles.quantityText}>
+                            <Ionicons name="add-circle-outline" size={32} color="white" />
+                        </SquareButton>
+                    </View>
+                    {/* <Button title="Xóa" onPress={() => removeFromCart(item.id)} /> */}
+                </View>
             </View>
         </Card>
     );
 
+    const TotalCartButton = ({ cart }) => (
+        <SquareButton>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                <Text
+                    style={{
+                        color: COLORS.white,
+                        fontWeight: FONTS.bold,
+                        fontSize: SIZES.medium,
+                    }}
+                >
+                    Checkout
+                </Text>
+            </View>
+        </SquareButton>
+    );
+
     return (
-        <View style={styles.container}>
-            <FlatList data={cart} keyExtractor={item => item.id} renderItem={renderItem} />
-        </View>
+        <SafeAreaView style={styles.container}>
+            <FlatList
+                data={cart}
+                renderItem={renderItem}
+                keyExtractor={item => item.code.toString()}
+                contentContainerStyle={styles.listContainer}
+            />
+            <View style={styles.totalsContainer}>
+                <View style={styles.row}>
+                    <Text style={styles.cartTotalText}>Items</Text>
+                    <Text style={styles.cartTotalText}>{getItemsCount()}</Text>
+                </View>
+                <View style={[styles.row, styles.total]}>
+                    <Text style={styles.cartTotalText}>Total</Text>
+                    <Text style={[styles.title, { color: COLORS.secondary, margin: 0 }]}>
+                        {total.toLocaleString("vi-VN")} ₫
+                    </Text>
+                </View>
+            </View>
+            {/* <TotalCartButton /> */}
+            <View
+                style={{
+                    width: "100%",
+                    position: "relative",
+                    bottom: 0,
+                    paddingVertical: SIZES.font,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "rgba(255,255,255,0.5)",
+                    zIndex: 1,
+                }}
+            >
+                <RectButton
+                    minWidth={200}
+                    fontSize={SIZES.large}
+                    {...SHADOWS.dark}
+                    icon={<Ionicons name="card-outline" size={24} color="white" />}
+                />
+            </View>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
         backgroundColor: "#f5f5f5",
+    },
+    title: {
+        fontWeight: FONTS.bold,
+        marginBottom: SIZES.base / 2,
+        fontFamily: FONTS.semiBold,
+        fontSize: SIZES.large,
+    },
+    listContainer: {
+        flexGrow: 1,
+    },
+    card: {
+        flexDirection: "row",
+        marginBottom: 10,
     },
     productImage: {
         width: 100,
@@ -54,23 +144,40 @@ const styles = StyleSheet.create({
         color: "#333",
     },
     quantityContainer: {
+        flex: 1,
+        alignItems: "flex-end",
+        justifyContent: "flex-end",
+    },
+    quantityControls: {
         flexDirection: "row",
         alignItems: "center",
-        marginVertical: 10,
-    },
-    quantityButton: {
-        backgroundColor: "#007bff",
-        padding: 10,
-        borderRadius: 5,
-        marginHorizontal: 5,
-    },
-    quantityButtonText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "bold",
+        justifyContent: "space-around",
+        gap: SIZES.base,
+        fontSize: SIZES.small,
+        backgroundColor: COLORS.gray,
+        borderRadius: 100,
     },
     quantityText: {
-        fontSize: 16,
+        backgroundColor: COLORS.gray, // transparent
+        borderRadius: 100,
+        padding: 0,
+    },
+    totalsContainer: {
+        padding: 20,
+        backgroundColor: "white",
+    },
+    row: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 10,
+    },
+    total: {
+        borderTopColor: "#dddddd",
+        borderTopWidth: 1,
+        paddingTop: 10,
+    },
+    cartTotalText: {
+        fontSize: SIZES.medium,
         color: "#333",
     },
 });
