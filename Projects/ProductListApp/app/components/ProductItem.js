@@ -12,7 +12,7 @@ const ProductItem = ({ item, onPress }) => {
                         source={{ uri: item.media[0].url }}
                         width="100%"
                         height={250}
-                        style={{ resizeMode: "cover", borderRadius: 7 }}
+                        style={{ resizeMode: "cover", borderRadius: 4 }}
                     />
                     <Text style={styles.price}>{item.price.toLocaleString("vi-VN")} ₫</Text>
                 </View>

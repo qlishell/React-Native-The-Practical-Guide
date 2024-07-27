@@ -68,23 +68,23 @@ const DetailScreen = ({ route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <DetailHeader media={product.media} />
-            <ScrollView style={styles.scrollView}>
-                <View style={styles.contentContainer}>
-                    <Text style={styles.name}>{product.name}</Text>
-                    <Text style={styles.price}>{product.price.toLocaleString("vi-VN")} ₫</Text>
-                    <View style={styles.description}>
-                        <View style={styles.infoRow}>
-                            <Text style={styles.infoLabel}>Mã sản phẩm:</Text>
-                            <Text style={styles.infoValue}>{product.code}</Text>
-                        </View>
-                        <View style={styles.infoRow}>
-                            <Text style={styles.infoLabel}>Số lượng còn lại:</Text>
-                            <Text style={styles.infoValue}>{product.quantity}</Text>
-                        </View>
-                        <TodoList todos={todos} />
+            <View style={styles.contentContainer}>
+                <Text style={styles.name}>{product.name}</Text>
+                <Text style={styles.price}>{product.price.toLocaleString("vi-VN")} ₫</Text>
+                <View style={styles.description}>
+                    <View style={styles.infoRow}>
+                        <Text style={styles.infoLabel}>Mã sản phẩm:</Text>
+                        <Text style={styles.infoValue}>{product.code}</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={styles.infoLabel}>Số lượng còn lại:</Text>
+                        <Text style={styles.infoValue}>{product.quantity}</Text>
                     </View>
                 </View>
-            </ScrollView>
+                <ScrollView style={styles.scrollView}>
+                    <TodoList todos={todos} />
+                </ScrollView>
+            </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.addToCartButton} onPress={() => handleAddToCart(product)}>
                     <Ionicons name="cart-outline" size={24} color="white" />
@@ -115,15 +115,15 @@ const styles = StyleSheet.create({
         color: COLORS.primary,
         fontFamily: FONTS.bold,
     },
-    scrollView: {
-        flex: 1,
-    },
+    scrollView: {},
     contentContainer: {
+        flex: 1,
         padding: SIZES.font,
+        paddingBottom: 0,
     },
     name: {
         fontWeight: "bold",
-        marginBottom: 10,
+        marginBottom: SIZES.base / 2,
         fontFamily: FONTS.semiBold,
         fontSize: SIZES.extraLarge,
         color: COLORS.primary,
@@ -132,18 +132,18 @@ const styles = StyleSheet.create({
         fontSize: SIZES.large,
         fontWeight: "bold",
         color: COLORS.secondary,
-        marginBottom: 20,
+        marginBottom: SIZES.base / 2,
     },
     description: {
         fontSize: SIZES.small,
         fontFamily: FONTS.regular,
         color: COLORS.secondary,
         lineHeight: SIZES.large,
+        paddingBottom: SIZES.base,
     },
     infoRow: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginBottom: 10,
     },
     infoLabel: {
         fontSize: SIZES.medium,
@@ -155,18 +155,18 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     buttonContainer: {
-        padding: 10,
-        backgroundColor: "white",
+        padding: SIZES.base,
+        backgroundColor: COLORS.white,
         borderTopWidth: 1,
         borderTopColor: "#e0e0e0",
     },
     addToCartButton: {
-        backgroundColor: "black",
+        backgroundColor: COLORS.black,
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        padding: 15,
-        borderRadius: 8,
+        padding: SIZES.medium,
+        borderRadius: SIZES.base,
     },
     addToCartText: {
         color: "white",
