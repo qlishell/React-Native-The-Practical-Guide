@@ -1,17 +1,13 @@
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { COLORS, SIZES } from "../constants";
+import CartIcon from "./CartIcon";
 
 const CustomHeader = () => {
-    const navigation = useNavigation();
-
     return (
         <View style={styles.header}>
             <Text style={styles.headerTitle}>Danh sách sản phẩm</Text>
-            <TouchableOpacity style={{ padding: 2 }} onPress={() => navigation.navigate("Cart")}>
-                <Ionicons name="cart-outline" size={24} color="#333" />
-            </TouchableOpacity>
+            <CartIcon />
         </View>
     );
 };
@@ -23,14 +19,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: 16,
         paddingTop: 32,
-        paddingBottom: 8,
+        paddingBottom: SIZES.base,
         backgroundColor: "white",
         elevation: 2,
     },
     headerTitle: {
-        fontSize: 20,
+        fontSize: SIZES.large,
         fontWeight: "bold",
-        color: "#333",
+        color: COLORS.primary900,
     },
 });
 
