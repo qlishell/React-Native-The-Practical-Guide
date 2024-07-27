@@ -3,7 +3,7 @@ import React from "react";
 import { Image, Text, TouchableOpacity } from "react-native";
 import { COLORS, FONTS, SHADOWS, SIZES } from "../../constants";
 
-export const RectButton = ({ minWidth, fontSize, handlePress, ...props }) => {
+export const RectButton = ({ minWidth, fontSize, handlePress, icon, ...props }) => {
     return (
         <TouchableOpacity
             style={{
@@ -11,10 +11,15 @@ export const RectButton = ({ minWidth, fontSize, handlePress, ...props }) => {
                 borderRadius: SIZES.extraLarge,
                 minWidth: minWidth,
                 padding: SIZES.small,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: SIZES.base,
                 ...props,
             }}
             onPress={handlePress}
         >
+            {icon}
             <Text
                 style={{
                     fontFamily: FONTS.semiBold,
@@ -50,12 +55,23 @@ export const CircleButton = ({ imgUrl, handlePress, ...props }) => {
     );
 };
 
-export const BackButton = ({ onPress }) => (
+export const SquareButton = ({ children, onPress, style }) => (
     <TouchableOpacity
-        style={{ marginTop: 20, padding: 10, backgroundColor: "#2196F3", borderRadius: 5 }}
+        style={[
+            {
+                padding: SIZES.medium,
+                backgroundColor: COLORS.primary500,
+                borderRadius: SIZES.base / 4,
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "row",
+            },
+            style,
+        ]}
         onPress={onPress}
+        activeOpacity={0.7} // Thay đổi độ mờ khi nhấn để phản hồi rõ ràng hơn
     >
-        <Text style={{ color: "white", fontWeight: "bold" }}>Quay lại</Text>
+        <Text>{children}</Text>
     </TouchableOpacity>
 );
 
