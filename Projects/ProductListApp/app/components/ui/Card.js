@@ -1,17 +1,17 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { SHADOWS } from "../../constants";
+import { COLORS, SHADOWS, SIZES } from "../../constants";
 
 const Card = ({ children, style }) => {
-    return <View style={[SHADOWS.medium, , styles.itemContainer, style]}>{children}</View>;
+    return <View style={[SHADOWS.dark, , styles.itemContainer, style]}>{children}</View>;
 };
 
 const styles = StyleSheet.create({
     itemContainer: {
-        padding: 10,
-        margin: 8,
-        backgroundColor: "white",
-        borderRadius: 8,
+        padding: SIZES.base,
+        margin: SIZES.base,
+        backgroundColor: COLORS.white,
+        borderRadius: SIZES.base,
         overflow: "hidden",
     },
 });
