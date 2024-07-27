@@ -54,14 +54,24 @@ export const CartProvider = ({ children }) => {
 
     const increaseQuantity = productId => {
         setCart(prevCart =>
-            prevCart.map(item => (item.id === productId ? { ...item, quantity: item.quantity + 1 } : item)),
+            prevCart.map(item =>
+                item.id === productId
+                    ? { ...item, quantity: item.quantity + 1, totalPrice: item.totalPrice + item.price }
+                    : item,
+            ),
         );
     };
 
     const decreaseQuantity = productId => {
         setCart(prevCart =>
             prevCart.map(item =>
-                item.id === productId ? { ...item, quantity: Math.max(1, item.quantity - 1) } : item,
+                item.id === productId
+                    ? {
+                          ...item,
+                          quantity: Math.max(1, item.quantity - 1),
+                          totalPrice: Math.max(item.price, item.totalPrice - item.price),
+                      }
+                    : item,
             ),
         );
     };
