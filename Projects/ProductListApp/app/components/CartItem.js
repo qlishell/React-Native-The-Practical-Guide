@@ -1,66 +1,85 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { heightToDp, widthToDp } from "rn-responsive-screen";
+import Card from "../components/ui/Card";
+import { COLORS, SIZES } from "../constants";
+import { SquareButton } from "./ui/Button";
 
-export default function CartItem({ item }) {
+export default function CartItem({ item, increaseQuantity, decreaseQuantity, removeFromCart }) {
     return (
-        <View style={styles.container}>
-            <Image source={{ uri: item.media[0].url }} style={styles.image} />
-            <View style={styles.info}>
-                <View>
-                    <Text style={styles.title}>{item.name}</Text>
-                    <Text style={styles.description}>
-                        {item.code} • ${item.price}
+        <Card style={styles.card}>
+            <Image source={{ uri: item.media[0].url }} style={styles.productImage} />
+            <View style={styles.productDetails}>
+                <View style={styles.cartText}>
+                    <Text style={[styles.title, { color: COLORS.primary }]}>{item.name}</Text>
+                    <Text style={[styles.title, { color: COLORS.secondary }]}>
+                        {item.price.toLocaleString("vi-VN")} ₫
                     </Text>
                 </View>
-                <View style={styles.footer}>
-                    <Text style={styles.price}>${item.totalPrice}</Text>
-                    <Text style={styles.quantity}>x{item.quantity}</Text>
+                <View style={styles.quantityContainer}>
+                    <View style={styles.quantityControls}>
+                        <SquareButton onPress={() => decreaseQuantity(item.id)} style={styles.quantityText}>
+                            <Ionicons name="remove-circle-outline" size={32} color="white" />
+                        </SquareButton>
+                        <Text style={styles.quantityText}>{item.quantity}</Text>
+                        <SquareButton onPress={() => increaseQuantity(item.id)} style={styles.quantityText}>
+                            <Ionicons name="add-circle-outline" size={32} color="white" />
+                        </SquareButton>
+                    </View>
                 </View>
+                <SquareButton
+                    onPress={() => removeFromCart(item.id)}
+                    style={[styles.quantityText, { position: "absolute", top: 0, right: 0, padding: SIZES.small / 2 }]}
+                >
+                    <Ionicons name="trash-outline" size={20} color="white" />
+                </SquareButton>
             </View>
-        </View>
+        </Card>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        marginTop: 20,
+    card: {
         flexDirection: "row",
-        borderBottomWidth: 1,
-        paddingBottom: 10,
-        borderColor: "#e6e6e6",
-        width: widthToDp("90%"),
+        marginBottom: 10,
     },
-    image: {
-        width: widthToDp(30),
-        height: heightToDp(30),
+    productImage: {
+        width: 100,
+        height: 100,
         borderRadius: 10,
     },
-    title: {
-        fontSize: widthToDp(4),
-        fontWeight: "bold",
+    productDetails: {
+        flex: 1,
+        marginLeft: 15,
+        position: "relative",
     },
-    footer: {
+    cartText: {
+        fontSize: 16,
+        color: COLORS.primary900,
+    },
+    quantityText: {
+        color: COLORS.white,
+        width: 30,
+        textAlign: "center",
+    },
+    quantityContainer: {
+        flex: 1,
+        alignItems: "flex-end",
+        justifyContent: "flex-end",
+    },
+    quantityControls: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        alignItems: "center",
+        justifyContent: "space-around",
+        gap: SIZES.small,
+        fontSize: SIZES.small,
+        backgroundColor: COLORS.gray,
+        borderRadius: 100,
     },
-    info: {
-        marginLeft: widthToDp(3),
-        flexDirection: "column",
-        justifyContent: "space-between",
-        marginVertical: heightToDp(2),
-        width: widthToDp(50),
-    },
-    description: {
-        fontSize: widthToDp(3.5),
-        color: "#8e8e93",
-        marginTop: heightToDp(2),
-    },
-
-    price: {
-        fontSize: widthToDp(4),
-    },
-    quantity: {
-        fontSize: widthToDp(4),
+    quantityText: {
+        backgroundColor: COLORS.gray, // transparent
+        color: COLORS.white,
+        borderRadius: 100,
+        padding: 0,
     },
 });
