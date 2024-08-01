@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import MealItem from "../components/MealItem";
 import { CATEGORIES, MEALS } from "../data/dummy-data";
 
-const MealsOverviewScreen = ({ route }) => {
+const MealsOverviewScreen = ({ route, navigation }) => {
     const catId = route.params.categoryId;
 
     const displayedMeals = MEALS.filter(mealItem => {
