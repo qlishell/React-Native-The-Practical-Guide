@@ -1,7 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const UserScreen = () => {
+const UserScreen = ({ navigation }) => {
+    function openDrawerHandler() {
+        navigation.toggleDrawer();
+    }
+
     return (
         <View style={styles.rootContainer}>
             <Text>
