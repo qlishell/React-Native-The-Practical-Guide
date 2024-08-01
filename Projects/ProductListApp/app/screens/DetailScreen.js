@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-toast-message";
 import DetailHeader from "../components/DetailHeader";
+import FocusedStatusBar from "../components/FocusedStatusBar";
 import TodoList from "../components/TodoList";
 import { getProduct } from "../config/databases/SQLiteDB";
 import { COLORS, FONTS, SIZES } from "../constants";
@@ -67,6 +68,7 @@ const DetailScreen = ({ route }) => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <FocusedStatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true} />
             <DetailHeader media={product.media} />
             <View style={styles.contentContainer}>
                 <Text style={styles.name}>{product.name}</Text>
