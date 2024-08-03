@@ -6,7 +6,7 @@ Trong các ứng dụng phức tạp, việc quản lý trạng thái và dữ l
 
 Do đó, trong phần này của khóa học, chúng ta sẽ học cách quản lý trạng thái toàn ứng dụng bằng cách sử dụng React Context API hoặc Redux, với ví dụ cụ thể cho React Native. Lưu ý rằng nếu bạn chưa biết về React Context hoặc Redux, khóa học này không tập trung vào những khái niệm cơ bản đó. Bạn nên tìm hiểu các khái niệm cơ bản từ các khóa học hoặc tài nguyên khác trước. Khóa học này sẽ chỉ tập trung vào cách sử dụng chúng trong ứng dụng React Native thông qua ví dụ của ứng dụng món ăn.
 
-# Using the created context with useContext
+## Using the created context with useContext
 
 Trong React Native, `useContext` và `React Context API` là những công cụ hữu ích để quản lý trạng thái toàn cục và chia sẻ dữ liệu giữa các thành phần mà không cần truyền props qua nhiều lớp. Dưới đây là hướng dẫn chi tiết về cách sử dụng `useContext` với React Context API trong ứng dụng React Native.
 
@@ -100,3 +100,139 @@ export default MainScreen;
 
 Sử dụng Context API trong React Native giúp bạn quản lý trạng thái và dữ liệu toàn cục một cách dễ dàng và hiệu quả mà không cần phải truyền props qua nhiều lớp, giúp mã nguồn của bạn trở nên rõ ràng và dễ bảo trì hơn.
 
+## Getting started with Redux Toolkit
+
+Redux Toolkit là một bộ công cụ chính thức được phát triển bởi nhóm Redux để giúp việc sử dụng Redux trở nên dễ dàng và hiệu quả hơn. Redux Toolkit cung cấp các API giúp viết mã Redux dễ hơn và giảm thiểu boilerplate code.
+
+Dưới đây là hướng dẫn để bắt đầu với Redux và Redux Toolkit trong một ứng dụng React Native.
+
+### 1. **Cài Đặt Redux Toolkit**
+
+Đầu tiên, bạn cần cài đặt Redux Toolkit và `react-redux`:
+
+```bash
+npm install @reduxjs/toolkit react-redux
+```
+
+Hoặc nếu bạn dùng yarn:
+
+```bash
+yarn add @reduxjs/toolkit react-redux
+```
+
+### 2. **Tạo Redux Slice**
+
+Redux Toolkit giới thiệu khái niệm "slice" để đơn giản hóa việc tạo reducer và actions. Một slice bao gồm một state và các reducers (hàm xử lý hành động) để cập nhật state đó.
+
+**`slices/themeSlice.js`:**
+
+```javascript
+import { createSlice } from "@reduxjs/toolkit";
+
+// Định nghĩa state ban đầu
+const initialState = {
+    isDarkMode: false,
+};
+
+// Tạo slice với Redux Toolkit
+const themeSlice = createSlice({
+    name: "theme",
+    initialState,
+    reducers: {
+        toggleTheme: state => {
+            state.isDarkMode = !state.isDarkMode;
+        },
+    },
+});
+
+// Xuất các actions và reducer
+export const { toggleTheme } = themeSlice.actions;
+export default themeSlice.reducer;
+```
+
+### 3. **Tạo Store**
+
+Tạo store và cấu hình Redux Toolkit để sử dụng slice của bạn.
+
+**`store.js`:**
+
+```javascript
+import { configureStore } from "@reduxjs/toolkit";
+import themeReducer from "./slices/themeSlice"; // Import reducer từ slice
+
+const store = configureStore({
+    reducer: {
+        theme: themeReducer,
+    },
+});
+
+export default store;
+```
+
+### 4. **Cung Cấp Store**
+
+Sử dụng `Provider` từ `react-redux` để cung cấp store cho ứng dụng của bạn.
+
+**`App.js`:**
+
+```javascript
+import React from "react";
+import { Provider } from "react-redux";
+import store from "./store";
+import MainScreen from "./screens/MainScreen";
+
+const App = () => {
+    return (
+        <Provider store={store}>
+            <MainScreen />
+        </Provider>
+    );
+};
+
+export default App;
+```
+
+### 5. **Sử Dụng Redux Trong Các Thành Phần**
+
+Sử dụng `useSelector` để lấy dữ liệu từ Redux store và `useDispatch` để gửi hành động.
+
+**`screens/MainScreen.js`:**
+
+```javascript
+import React from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "../slices/themeSlice"; // Import action
+
+const MainScreen = () => {
+    const isDarkMode = useSelector(state => state.theme.isDarkMode);
+    const dispatch = useDispatch();
+
+    return (
+        <View style={[styles.container, { backgroundColor: isDarkMode ? "#333" : "#fff" }]}>
+            <Text style={{ color: isDarkMode ? "#fff" : "#000" }}>{isDarkMode ? "Dark Mode" : "Light Mode"}</Text>
+            <Button title="Toggle Theme" onPress={() => dispatch(toggleTheme())} />
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+});
+
+export default MainScreen;
+```
+
+### 6. **Tóm Tắt**
+
+-   **Cài Đặt Redux Toolkit và `react-redux`:** Sử dụng npm hoặc yarn để cài đặt.
+-   **Tạo Redux Slice:** Sử dụng `createSlice` từ Redux Toolkit để định nghĩa state và reducers.
+-   **Tạo Store:** Sử dụng `configureStore` từ Redux Toolkit để cấu hình store với các reducers.
+-   **Cung Cấp Store:** Bọc ứng dụng với `Provider` từ `react-redux` để cung cấp store.
+-   **Sử Dụng Redux Trong Thành Phần:** Sử dụng `useSelector` để truy cập state và `useDispatch` để gửi actions.
+
+Redux Toolkit giúp giảm bớt boilerplate code và cung cấp các API tiện lợi để làm việc với Redux một cách dễ dàng hơn.
