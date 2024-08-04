@@ -3,7 +3,7 @@ import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { GlobalStyles } from "../../constants/styles";
-import { getFormattedDate } from "../../util/date";
+import { getFormattedDate } from "../../utils/date";
 
 const ExpenseItem = ({ id, description, amount, date }) => {
     const navigation = useNavigation();

@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
 import { ExpensesContext } from "../store/expenses-context";
-import { getDateMinusDays } from "../util/date";
+import { getDateMinusDays } from "../utils/date";
 
 const RecentExpenses = () => {
     const expensesCtx = useContext(ExpensesContext);
