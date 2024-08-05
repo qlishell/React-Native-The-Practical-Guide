@@ -53,6 +53,8 @@ Authentication hoạt động như sau:
 
 Chúng ta sẽ xem các khía cạnh này trong thực hành trong phần tiếp theo của khóa học.
 
+## Authentication Work
+
 Authentication là quá trình xác thực danh tính của người dùng khi họ cố gắng truy cập vào một ứng dụng hoặc dịch vụ. Đây là một phần quan trọng trong bảo mật ứng dụng và có thể được thực hiện thông qua nhiều phương pháp khác nhau. Dưới đây là cách authentication thường hoạt động với backend API:
 
 ### **1. Đăng Ký Người Dùng (Sign Up)**
