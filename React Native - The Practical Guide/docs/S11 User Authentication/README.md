@@ -26,6 +26,33 @@ Chúng ta sẽ bắt đầu với một dự án mẫu được cung cấp và t
 
 ![image](./assets/images/howdoesauthenticationwork.png)
 
+Authentication hoạt động như sau:
+
+1. **Ứng Dụng và Backend:**
+
+    - Ứng dụng chạy trên thiết bị di động cần kết nối với một backend API (như Firebase hoặc API khác) để xác thực người dùng.
+
+2. **Gửi Thông Tin Đăng Nhập:**
+
+    - Khi người dùng nhập email và mật khẩu vào biểu mẫu, thông tin này được gửi đến backend qua yêu cầu HTTP.
+
+3. **Xác Thực trên Backend:**
+
+    - Backend kiểm tra email và mật khẩu, xác minh tính hợp lệ. Nếu là người dùng mới, email và mật khẩu cũng được kiểm tra.
+
+4. **Tạo Token Xác Thực:**
+
+    - Nếu thông tin đăng nhập hợp lệ, backend tạo một token xác thực (chuỗi văn bản được ký bởi backend) và gửi lại cho thiết bị.
+
+5. **Lưu và Sử Dụng Token:**
+
+    - Token được lưu trên thiết bị và dùng cho các yêu cầu HTTP tiếp theo đến backend. Token giúp xác thực các yêu cầu và truy cập vào các tài nguyên bảo vệ.
+
+6. **Xác Thực Trong Tương Lai:**
+    - Mỗi yêu cầu đến các điểm cuối API bảo vệ sẽ bao gồm token. Backend sẽ xác minh token để cấp quyền truy cập.
+
+Chúng ta sẽ xem các khía cạnh này trong thực hành trong phần tiếp theo của khóa học.
+
 Authentication là quá trình xác thực danh tính của người dùng khi họ cố gắng truy cập vào một ứng dụng hoặc dịch vụ. Đây là một phần quan trọng trong bảo mật ứng dụng và có thể được thực hiện thông qua nhiều phương pháp khác nhau. Dưới đây là cách authentication thường hoạt động với backend API:
 
 ### **1. Đăng Ký Người Dùng (Sign Up)**
