@@ -5,8 +5,8 @@ import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
 import ErrorOverlay from "../components/UI/ErrorOverlay";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import { ExpensesContext } from "../store/expenses-context";
-import { fetchExpenses } from "../util/http";
 import { getDateMinusDays } from "../utils/date";
+import { fetchExpenses } from "../utils/http";
 
 const RecentExpenses = () => {
     const expensesCtx = useContext(ExpensesContext);
