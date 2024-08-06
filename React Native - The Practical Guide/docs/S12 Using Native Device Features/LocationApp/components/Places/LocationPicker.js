@@ -1,6 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
-import * as Location from "expo-location";
-import React, { useEffect, useState } from "react";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
+import { getCurrentPositionAsync, PermissionStatus, useForegroundPermissions } from "expo-location";
+import { useEffect, useState } from "react";
 import { Alert, Image, StyleSheet, Text, View } from "react-native";
 
 import { Colors } from "../../constants/colors";
@@ -8,47 +8,56 @@ import { getMapPreview } from "../../util/location";
 import OutlinedButton from "../UI/OutlinedButton";
 
 function LocationPicker() {
-    const [pickedLocation, setPickedLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
-    const [locationPermission, setLocationPermission] = useState(null);
+    const [pickedLocation, setPickedLocation] = useState();
+    const isFocused = useIsFocused();
 
     const navigation = useNavigation();
+    const route = useRoute();
+
+    const [locationPermissionInformation, requestPermission] = useForegroundPermissions();
 
     useEffect(() => {
-        const getPermissions = async () => {
-            const { status } = await Location.requestForegroundPermissionsAsync();
-            setLocationPermission(status);
+        if (isFocused && route.params) {
+            const mapPickedLocation = {
+                lat: route.params.pickedLat,
+                lng: route.params.pickedLng,
+            };
+            setPickedLocation(mapPickedLocation);
+        }
+    }, [route, isFocused]);
 
-            if (status !== "granted") {
-                setErrorMsg("Permission to access location was denied");
-            }
-        };
+    async function verifyPermissions() {
+        if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
+            const permissionResponse = await requestPermission();
 
-        getPermissions();
-    }, []);
+            return permissionResponse.granted;
+        }
 
-    const getLocationHandler = async () => {
-        if (locationPermission !== "granted") {
-            Alert.alert("Insufficient Permissions!", "You need to grant location permissions to use this app.", [
-                { text: "Open Settings", onPress: () => Location.openSettings() },
-            ]);
+        if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+            Alert.alert("Insufficient Permissions!", "You need to grant location permissions to use this app.");
+            return false;
+        }
+
+        return true;
+    }
+
+    async function getLocationHandler() {
+        const hasPermission = await verifyPermissions();
+
+        if (!hasPermission) {
             return;
         }
 
-        try {
-            const location = await Location.getCurrentPositionAsync();
-            setPickedLocation({
-                lat: location.coords.latitude,
-                lng: location.coords.longitude,
-            });
-        } catch (error) {
-            setErrorMsg("Unable to retrieve location.");
-        }
-    };
+        const location = await getCurrentPositionAsync();
+        setPickedLocation({
+            lat: location.coords.latitude,
+            lng: location.coords.longitude,
+        });
+    }
 
-    const pickOnMapHandler = () => {
+    function pickOnMapHandler() {
         navigation.navigate("Map");
-    };
+    }
 
     let locationPreview = <Text>No location picked yet.</Text>;
 
@@ -63,10 +72,8 @@ function LocationPicker() {
         );
     }
 
-    let text = errorMsg || (pickedLocation ? JSON.stringify(pickedLocation) : "No location picked yet.");
-
     return (
-        <View style={styles.container}>
+        <View>
             <View style={styles.mapPreview}>{locationPreview}</View>
             <View style={styles.actions}>
                 <OutlinedButton icon="location" onPress={getLocationHandler}>
@@ -76,18 +83,13 @@ function LocationPicker() {
                     Pick on Map
                 </OutlinedButton>
             </View>
-            <Text style={styles.paragraph}>{text}</Text>
         </View>
     );
 }
 
+export default LocationPicker;
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 20,
-    },
     mapPreview: {
         width: "100%",
         height: 200,
@@ -106,11 +108,6 @@ const styles = StyleSheet.create({
     image: {
         width: "100%",
         height: "100%",
-    },
-    paragraph: {
-        fontSize: 18,
-        textAlign: "center",
+        // borderRadius: 4
     },
 });
-
-export default LocationPicker;
