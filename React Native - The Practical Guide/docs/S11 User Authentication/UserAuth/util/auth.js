@@ -3,7 +3,7 @@ import axios from "axios";
 const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 
 async function authenticate(mode, email, password) {
-    const url = `${process.env.EXPO_PUBLIC_API_URL}${mode}?key=${API_KEY}`;
+    const url = `${process.env.EXPO_PUBLIC_API_AUTH}${mode}?key=${API_KEY}`;
 
     const response = await axios.post(url, {
         email: email,
