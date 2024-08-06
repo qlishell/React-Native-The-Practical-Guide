@@ -1,5 +1,6 @@
-import { getCurrentPositionAsync, PermissionStatus, useForegroundPermissions } from "expo-location";
-import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
+import React, { useEffect, useState } from "react";
 import { Alert, Image, StyleSheet, Text, View } from "react-native";
 
 import { Colors } from "../../constants/colors";
@@ -7,40 +8,47 @@ import { getMapPreview } from "../../util/location";
 import OutlinedButton from "../UI/OutlinedButton";
 
 function LocationPicker() {
-    const [pickedLocation, setPickedLocation] = useState();
+    const [pickedLocation, setPickedLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+    const [locationPermission, setLocationPermission] = useState(null);
 
-    const [locationPermissionInformation, requestPermission] = useForegroundPermissions();
+    const navigation = useNavigation();
 
-    async function verifyPermissions() {
-        if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
-            const permissionResponse = await requestPermission();
+    useEffect(() => {
+        const getPermissions = async () => {
+            const { status } = await Location.requestForegroundPermissionsAsync();
+            setLocationPermission(status);
 
-            return permissionResponse.granted;
-        }
+            if (status !== "granted") {
+                setErrorMsg("Permission to access location was denied");
+            }
+        };
 
-        if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-            Alert.alert("Insufficient Permissions!", "You need to grant location permissions to use this app.");
-            return false;
-        }
+        getPermissions();
+    }, []);
 
-        return true;
-    }
-
-    async function getLocationHandler() {
-        const hasPermission = await verifyPermissions();
-
-        if (!hasPermission) {
+    const getLocationHandler = async () => {
+        if (locationPermission !== "granted") {
+            Alert.alert("Insufficient Permissions!", "You need to grant location permissions to use this app.", [
+                { text: "Open Settings", onPress: () => Location.openSettings() },
+            ]);
             return;
         }
 
-        const location = await getCurrentPositionAsync();
-        setPickedLocation({
-            lat: location.coords.latitude,
-            lng: location.coords.longitude,
-        });
-    }
+        try {
+            const location = await Location.getCurrentPositionAsync();
+            setPickedLocation({
+                lat: location.coords.latitude,
+                lng: location.coords.longitude,
+            });
+        } catch (error) {
+            setErrorMsg("Unable to retrieve location.");
+        }
+    };
 
-    function pickOnMapHandler() {}
+    const pickOnMapHandler = () => {
+        navigation.navigate("Map");
+    };
 
     let locationPreview = <Text>No location picked yet.</Text>;
 
@@ -55,8 +63,10 @@ function LocationPicker() {
         );
     }
 
+    let text = errorMsg || (pickedLocation ? JSON.stringify(pickedLocation) : "No location picked yet.");
+
     return (
-        <View>
+        <View style={styles.container}>
             <View style={styles.mapPreview}>{locationPreview}</View>
             <View style={styles.actions}>
                 <OutlinedButton icon="location" onPress={getLocationHandler}>
@@ -66,13 +76,18 @@ function LocationPicker() {
                     Pick on Map
                 </OutlinedButton>
             </View>
+            <Text style={styles.paragraph}>{text}</Text>
         </View>
     );
 }
 
-export default LocationPicker;
-
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+    },
     mapPreview: {
         width: "100%",
         height: 200,
@@ -91,6 +106,11 @@ const styles = StyleSheet.create({
     image: {
         width: "100%",
         height: "100%",
-        // borderRadius: 4
+    },
+    paragraph: {
+        fontSize: 18,
+        textAlign: "center",
     },
 });
+
+export default LocationPicker;

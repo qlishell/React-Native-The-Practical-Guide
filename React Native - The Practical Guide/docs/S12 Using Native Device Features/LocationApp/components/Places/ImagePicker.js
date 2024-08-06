@@ -1,27 +1,40 @@
-import { launchCameraAsync, PermissionStatus, useCameraPermissions } from "expo-image-picker";
-import { useState } from "react";
-import { Alert, Image, StyleSheet, Text, View } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { useEffect, useState } from "react";
+import { Alert, Image, Linking, Platform, StyleSheet, Text, View } from "react-native";
 
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
 
-function ImagePicker() {
+function ImagePickerFC() {
     const [pickedImage, setPickedImage] = useState();
+    const [cameraPermission, setCameraPermission] = useState(null);
+    const [mediaLibraryPermission, setMediaLibraryPermission] = useState(null);
 
-    const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
+    useEffect(() => {
+        const getPermissions = async () => {
+            const { status: cameraStatus } = await ImagePicker.requestCameraPermissionsAsync();
+            const { status: mediaLibraryStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            setCameraPermission(cameraStatus);
+            setMediaLibraryPermission(mediaLibraryStatus);
+        };
+        getPermissions();
+    }, []);
 
     async function verifyPermissions() {
-        if (cameraPermissionInformation.status === PermissionStatus.UNDETERMINED) {
-            const permissionResponse = await requestPermission();
+        if (cameraPermission !== "granted" || mediaLibraryPermission !== "granted") {
+            let message = "You need to grant camera permissions to use this app.";
 
-            return permissionResponse.granted;
-        }
+            if (Platform.OS === "ios") {
+                message += " You can enable permissions in Settings > Privacy > Camera.";
+            } else {
+                message += " You can enable permissions in Settings > Apps > Your App > Permissions.";
+            }
 
-        if (cameraPermissionInformation.status === PermissionStatus.DENIED) {
-            Alert.alert("Insufficient Permissions!", "You need to grant camera permissions to use this app.");
+            Alert.alert("Insufficient Permissions!", message, [
+                { text: "Open Settings", onPress: () => Linking.openSettings() },
+            ]);
             return false;
         }
-
         return true;
     }
 
@@ -32,13 +45,16 @@ function ImagePicker() {
             return;
         }
 
-        const image = await launchCameraAsync({
+        const image = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [16, 9],
             quality: 0.5,
         });
 
-        setPickedImage(image.uri);
+        if (!image.canceled) {
+            setPickedImage(image.assets[0].uri);
+        }
     }
 
     let imagePreview = <Text>No image taken yet.</Text>;
@@ -57,7 +73,7 @@ function ImagePicker() {
     );
 }
 
-export default ImagePicker;
+export default ImagePickerFC;
 
 const styles = StyleSheet.create({
     imagePreview: {
@@ -68,6 +84,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: Colors.primary100,
         borderRadius: 4,
+        overflow: "hidden",
     },
     image: {
         width: "100%",
