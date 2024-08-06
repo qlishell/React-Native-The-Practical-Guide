@@ -4,7 +4,7 @@ import MapView, { Marker } from "react-native-maps";
 
 import IconButton from "../components/UI/IconButton";
 
-function Map() {
+function Map({ navigation }) {
     const [selectedLocation, setSelectedLocation] = useState();
 
     const region = {

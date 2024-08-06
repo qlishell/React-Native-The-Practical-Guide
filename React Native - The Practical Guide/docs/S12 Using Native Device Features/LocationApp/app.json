@@ -5,24 +5,23 @@
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
-        "userInterfaceStyle": "light",
         "splash": {
             "image": "./assets/splash.png",
             "resizeMode": "contain",
             "backgroundColor": "#ffffff"
         },
+        "updates": {
+            "fallbackToCacheTimeout": 0
+        },
+        "assetBundlePatterns": ["**/*"],
         "ios": {
-            "supportsTablet": true,
-            "infoPlist": {
-                "NSCameraUsageDescription": "The app needs access to your camera in order to take photos of your favorite places."
-            }
+            "supportsTablet": true
         },
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/adaptive-icon.png",
-                "backgroundColor": "#ffffff"
-            },
-            "permissions": ["CAMERA"]
+                "backgroundColor": "#FFFFFF"
+            }
         },
         "web": {
             "favicon": "./assets/favicon.png"
@@ -32,12 +31,6 @@
                 "expo-image-picker",
                 {
                     "cameraPermission": "The app needs access to your camera in order to take photos of your favorite places."
-                }
-            ],
-            [
-                "expo-location",
-                {
-                    "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
                 }
             ]
         ]
