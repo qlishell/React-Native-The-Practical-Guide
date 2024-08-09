@@ -5,7 +5,7 @@ import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
 
-function ImagePicker() {
+function ImagePicker({ onTakeImage }) {
     const [pickedImage, setPickedImage] = useState();
 
     const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
@@ -39,6 +39,7 @@ function ImagePicker() {
         });
 
         setPickedImage(image.uri);
+        onTakeImage(image.uri);
     }
 
     let imagePreview = <Text>No image taken yet.</Text>;
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: Colors.primary100,
         borderRadius: 4,
+        overflow: "hidden",
     },
     image: {
         width: "100%",
